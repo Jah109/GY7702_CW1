@@ -20,8 +20,73 @@ Also the library **knitr**
 library(knitr)
 ```
 
+Other libraries are also used for specific question for instance in question 2 the library **palmerpenguins** these specific libraries will be referred to within each question  
+
 ## Questions 
 ### Question 1: 
 Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. 
-
 #### Question 1.1:
+
+
+### Question 2:
+Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)
+
+#### Question 2.1
+```{r message = FALSE, warning = FALSE}
+library(tidyverse)
+library(knitr)
+install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+#### Question 2.2
+```{r message = FALSE, warning = FALSE}
+# Starts from the entire palmerpenguins libraries  
+palmerpenguins::penguins %>%
+  # Selects only the necessary columns
+  dplyr::select(species, island, bill_length_mm, body_mass_g
+  ) %>%
+  # Retain only rows representing the Gentoo species 
+  dplyr::filter(species == "Gentoo"
+  ) %>%
+  # Sort by descending body mass in g
+  dplyr::arrange(desc(body_mass_g)) 
+```
+
+#### Question 2.3 
+```{r message = FALSE, warning = FALSE}
+# Starts from the entire palmerpenguins libraries  
+palmerpenguins::penguins %>%
+  # Selects only the necessary columns
+  dplyr::select(bill_length_mm, island) %>%
+  # Grouped by island
+  dplyr::group_by(island) %>%
+  # Drops rows containing NAs in the bill_length_mm column
+  # otherwise the mean function will return NA
+  dplyr::filter(!is.na(bill_length_mm)) %>%
+  # Calculates the average of bill_length_mm
+  dplyr::summarise(average_bill_length = mean(bill_length_mm)) %>%
+  # Ordered by descending average_bill_length
+  dplyr::arrange(desc(average_bill_length)) %>%
+  # kable improves tibble format 
+  knitr::kable()
+```
+
+#### Question 2.4 
+```{r message = FALSE, warning = FALSE}
+# Starts from the entire palmerpenguins libraries 
+palmerpenguins::penguins %>%
+  # Selects only the necessary columns
+  dplyr::select(species, bill_length_mm, bill_depth_mm) %>%
+  # Grouped by species
+  dplyr::group_by(species) %>%
+  # Drops rows containing NAs in the bill_length_mm column
+  # otherwise the mean function will return NA
+  dplyr::filter(!is.na(bill_length_mm))%>%
+  # Drops rows containing NAs in the bill_depth_mm column
+  # otherwise the mean function will return NA
+  dplyr::filter(!is.na(bill_depth_mm)) %>%
+  # Calculates the bill length to bill depth ratio 
+  dplyr::summarise(bill_length_to_bill_depth_ratio = 
+                     (bill_length_mm/bill_depth_mm))
+```
