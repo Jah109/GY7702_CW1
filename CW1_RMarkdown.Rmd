@@ -4,17 +4,17 @@ author: "James A. Hardwick (179001497)"
 date: "04/11/2020"
 output: pdf_document
 ---
-#Introduction 
+# Introduction 
 This document has been created to increase the **reproducibility** of this coursework 
 assignment, written in RMarkdown. To support the reproducibility of the document
 please refer to the [GitHub data repository](https://github.com/Jah109/GY7702_CW1.git) 
 for the commits that document the development of this Coursework 1
 
-##Libraries 
+## Libraries 
 This coursework use the library **tidyverse**
 
 
-##Questions 
-###Question 1: 
+## Questions 
+### Question 1: 
 Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. 
-####Question 1.1:
+#### Question 1.1:
