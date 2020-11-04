@@ -1,0 +1,9 @@
+---
+title: 'GY7702: Coursework 1'
+author: "James A. Hardwick (179001497)"
+date: "04/11/2020"
+output: pdf_document
+---
+# Introduction 
+This document has been created to increase the **reproducibility** of this coursework 
+assignment, written in RMarkdown. To support the reproducibility of the document please refer to the [GitHub data repository](https://github.com/Jah109/GY7702_CW1.git) for the commits that document the development of this Coursework 1
