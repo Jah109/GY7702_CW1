@@ -7,7 +7,7 @@ output: pdf_document
 # Introduction 
 This document has been created to increase the **reproducibility** of this coursework 
 assignment, written in RMarkdown. To support the reproducibility of the document
-please refer to the [GitHub data repository](https://github.com/Jah109/GY7702_CW1.git) 
+please refer to the [GitHub data repository][https://github.com/Jah109/GY7702_CW1.git]
 for the commits that document the development of this Coursework 1
 
 ## Libraries 
@@ -29,7 +29,7 @@ Question 1 deals with a vector of 25 numbers between 1 and 7, with each value re
 
 
 ### Question 2:
-Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)
+Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [Palmerpenguins GitHub Repositry][https://github.com/allisonhorst/palmerpenguins.git]
 
 #### Question 2.1
 Question 2.1 ask for the library (palmerpenguins) to be installed and loaded 
@@ -76,7 +76,7 @@ palmerpenguins::penguins %>%
 ```
 
 #### Question 2.4 
-Question 2.4 creates a table showing the *minimum, median and maximum proportion* between *bill length and bill depth by species* 
+Question 2.4 creates a table showing the *minimum, median and maximum* proportion between *bill length and bill depth by species* 
 ```{r message = FALSE, warning = FALSE}
 # Starts from the entire palmerpenguins libraries 
 palmerpenguins::penguins %>%
@@ -91,12 +91,12 @@ palmerpenguins::penguins %>%
   # otherwise the mean function will return NA
   dplyr::filter(!is.na(bill_depth_mm)) %>%
   # Calculates the bill length to bill depth ratio 
-  dplyr::summarise(bill_length_to_bill_depth_ratio = 
+  dplyr::summarise(Proportion= 
                      (bill_length_mm/bill_depth_mm)) %>%
    # using summariase again the minimum, median and maximum for each species can be calculated 
-  dplyr::summarise(min(Proportion_Bill_length_to_depth), 
-                   median(Proportion_Bill_length_to_depth),
-                   max(Proportion_Bill_length_to_depth)) %>%
+  dplyr::summarise(min(Proportion), 
+                   median(Proportion),
+                   max(Proportion)) %>%
   # Using the function kable formats the table 
   knitr::kable()
 ```
