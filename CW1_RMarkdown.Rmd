@@ -7,7 +7,7 @@ output: pdf_document
 # Introduction 
 This document has been created to increase the **reproducibility** of this coursework 
 assignment, written in RMarkdown. To support the reproducibility of the document
-please refer to the [GitHub data repository][https://github.com/Jah109/GY7702_CW1.git]
+please refer to the *[GitHub data repository](https://github.com/Jah109/GY7702_CW1.git)*
 for the commits that document the development of this Coursework 1
 
 ## Libraries 
@@ -22,14 +22,15 @@ library(knitr)
 
 Other libraries are also used for specific question for instance in question 2 the library **palmerpenguins** these specific libraries will be referred to within each question  
 
-## Questions 
-### Question 1: 
+**## Questions** 
+
+**### Question 1:** 
 Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. 
 #### Question 1.1:
 
 
-### Question 2:
-Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [Palmerpenguins GitHub Repositry][https://github.com/allisonhorst/palmerpenguins.git]
+**### Question 2:**
+Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at *[Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)*
 
 #### Question 2.1
 Question 2.1 ask for the library (palmerpenguins) to be installed and loaded 
@@ -100,3 +101,27 @@ palmerpenguins::penguins %>%
   # Using the function kable formats the table 
   knitr::kable()
 ```
+
+
+**### Question 3:**
+
+Question 3 looks at a topical data set of new and cumulative **COVD19** cases in the UK between March 1st and October 17th 2020. **COVID19** data is sourced from the [HM Government Coronavirus in the UK](https://coronavirus-staging.data.gov.uk/details/cases) 
+
+#### Question 3.1
+Question 3.1 asks for the data covid19 cases to be loaded  
+
+```{r message = FALSE, warning = FALSE}
+#using readr (part of tidyverse)
+library(readr)
+# reads the .CSV file with the correct directory
+# Imports covid19_cases_20200301_20201017.csv and assings to a new variable
+#covid_data 
+covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
+```
+
+#### Question 3.1
+
+
+
+
+

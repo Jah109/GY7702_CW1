@@ -69,9 +69,18 @@ palmerpenguins::penguins %>%
   # Drops rows containing NAs in the bill_depth_mm column
   # otherwise the mean function will return NA
   dplyr::filter(!is.na(bill_depth_mm)) %>%
-  # Calculates the bill length to bill depth ratio 
-  dplyr::summarise(bill_length_to_bill_depth_ratio = 
-                     (bill_length_mm/bill_depth_mm))
+  # Calculates the bill length to bill depth proportion  
+  dplyr::summarise(Proportion_Bill_length_to_depth = 
+                     (bill_length_mm/bill_depth_mm)) %>%
+  # using summariase again the minimum, median and maximum for each species can be calculated 
+  dplyr::summarise(min(Proportion_Bill_length_to_depth), 
+                   median(Proportion_Bill_length_to_depth),
+                   max(Proportion_Bill_length_to_depth)) %>%
+  # Using the function kable formats the table 
+  knitr::kable()
+  
+
+# this code is not finished need to show the minimum, median and maximum by species 
 
 
 # Question 3 --------------------------------------------------------------
