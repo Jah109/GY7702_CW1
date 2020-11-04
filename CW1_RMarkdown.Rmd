@@ -12,9 +12,16 @@ for the commits that document the development of this Coursework 1
 
 ## Libraries 
 This coursework use the library **tidyverse**
-
+```{r message = FALSE, warning = FALSE}
+library(tidyverse)
+```
+Also the library **knitr**
+```{r message = FALSE, warning = FALSE}
+library(knitr)
+```
 
 ## Questions 
 ### Question 1: 
 Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. 
+
 #### Question 1.1:
