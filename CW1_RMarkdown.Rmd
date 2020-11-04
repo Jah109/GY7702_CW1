@@ -32,14 +32,16 @@ Question 1 deals with a vector of 25 numbers between 1 and 7, with each value re
 Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)
 
 #### Question 2.1
+Question 2.1 ask for the library (palmerpenguins) to be installed and loaded 
 ```{r message = FALSE, warning = FALSE}
 library(tidyverse)
 library(knitr)
-install.packages("palmerpenguins")
+# install.packages("palmerpenguins")
 library(palmerpenguins)
 ```
 
 #### Question 2.2
+Question 2.2 creates a table showing *species, island, bill length and body mass* of the 10 Gentoo penguins in the penguins table with the highest body mass
 ```{r message = FALSE, warning = FALSE}
 # Starts from the entire palmerpenguins libraries  
 palmerpenguins::penguins %>%
@@ -54,6 +56,7 @@ palmerpenguins::penguins %>%
 ```
 
 #### Question 2.3 
+Question 2.3 creates a table with *average bill length per island*, ordered by *average bill length*
 ```{r message = FALSE, warning = FALSE}
 # Starts from the entire palmerpenguins libraries  
 palmerpenguins::penguins %>%
@@ -73,6 +76,7 @@ palmerpenguins::penguins %>%
 ```
 
 #### Question 2.4 
+Question 2.4 creates a table showing the *minimum, median and maximum proportion* between *bill length and bill depth by species* 
 ```{r message = FALSE, warning = FALSE}
 # Starts from the entire palmerpenguins libraries 
 palmerpenguins::penguins %>%
