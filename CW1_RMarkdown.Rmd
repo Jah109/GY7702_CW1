@@ -25,9 +25,36 @@ Other libraries are also used for specific question for instance in question 2 t
 **## Questions** 
 
 **### Question 1:** 
-Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. 
+Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. Vector was defined by the question: 
+
+```{r message = FALSE, warning = FALSE}
+# vector survey_responses contains 25 elements 
+survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5, 
+                      2, 4, NA, 3, 3, 5, NA)
+```
+
 #### Question 1.1:
 
+```{r message = FALSE, warning = FALSE}
+# specify the survey_response variable 
+survey_responses %>%
+  # using na.omit removes NA values from the vector 
+  na.omit() %>%
+  # is. element will return logical output, if 7 or completely agree was answered in the 
+  # survey it will be returned as TRUE 
+  is.element(7) %>%
+  # is. element will return logical output, if 1 or completely agree was answered in the 
+  # survey it will be returned as TRUE
+  is.element(1)
+```
+#### Question 1.2
+Extract the indexes who at least somewhat agreed or more (values 5 to 7)
+
+```{r message = FALSE, warning = FALSE}
+# Function which see if any value between 5 and 7 and return the index of each 
+# survey participant 
+which(survey_responses %in% 5:7)
+```
 
 **### Question 2:**
 Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at *[Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)*

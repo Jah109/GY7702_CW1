@@ -4,13 +4,56 @@ library(knitr)
 
 # Question 1 --------------------------------------------------------------
 # vector survey_responses contains 25 elements 
-survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5, 
+survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 2, 5, NA, 5, 
                       2, 4, NA, 3, 3, 5, NA)
 
+
 # 1.1 ---------------------------------------------------------------------
+survey_responses_NA_ommited <- survey_responses %>%
+  na.omit()
+ 
+survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 2, 5, NA, 5, 
+                      2, 4, NA, 3, 3, 5, NA)
+
+survery_responses_somewhat_agree <- survey_responses %>%
+  na.omit()
 
 
 
+
+which(survery_responses_somewhat_agree = 5:7) 
+
+print(survery_responses_somewhat_agree)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if (survey_responses_NA_ommited == 1|7) {
+      cat("Even\n")
+    } else {
+      cat("Odd\n")
+    }
+  
 
 # 1.2 ---------------------------------------------------------------------
 survey_responses %()% c(1,7)
@@ -79,9 +122,6 @@ palmerpenguins::penguins %>%
   # Using the function kable formats the table 
   knitr::kable()
   
-
-# this code is not finished need to show the minimum, median and maximum by species 
-
 
 # Question 3 --------------------------------------------------------------
 
