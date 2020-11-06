@@ -15,49 +15,12 @@ survey_responses_NA_ommited <- survey_responses %>%
 survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 2, 5, NA, 5, 
                       2, 4, NA, 3, 3, 5, NA)
 
-survery_responses_somewhat_agree <- survey_responses %>%
-  na.omit()
 
 
 
-
-which(survery_responses_somewhat_agree = 5:7) 
-
-print(survery_responses_somewhat_agree)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    if (survey_responses_NA_ommited == 1|7) {
-      cat("Even\n")
-    } else {
-      cat("Odd\n")
-    }
-  
 
 # 1.2 ---------------------------------------------------------------------
-survey_responses %()% c(1,7)
-
+which(survey_responses %in% 5:7)
 
 # Question 2 --------------------------------------------------------------
 # 2.1 ---------------------------------------------------------------------
@@ -138,7 +101,7 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 # with the value available for the previous date
 # Resulting table will be stored in the new variable 
 # brentwood_complete_covide_data 
-Brentwood_complete_covid_data <-covid_data %>%
+Brentwood_complete_covid_data_a <-covid_data %>%
   #selects extracts wanted columns 
   dplyr::select(specimen_date, area_name, newCasesBySpecimenDate, 
                 cumCasesBySpecimenDate)%>%
@@ -148,17 +111,18 @@ Brentwood_complete_covid_data <-covid_data %>%
   # tidyr :: fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
-  # *replace remaining NA value code goes here* 
+  # replace_na replaces any reamining NA with 0 
+  tidyr::replace_na()%>%
   # dplyr :: filter subsets the area_name to Bentwood 
   dplyr::filter(area_name == "Brentwood")%>%
   # converting to a data.frame as initally when trying to drop area_name using
   # dplyr::select (-area_number) got an error message 'adding missing grouping 
-  # variables error: area_number'
+  # variables error: area_number so I converted it to a data frame
   data.frame()%>%
-  # drop columns
+  # then drop area_name using select 
   dplyr::select(-area_name) %>%
-  # converted back to a tibble 
-  as_tibble() %>%
+  # Then converted back to a tibble 
+  as_tibble() 
   
   
   # 3.3 ---------------------------------------------------------------------

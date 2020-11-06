@@ -56,7 +56,7 @@ Extract the indexes who at least somewhat agreed or more (values 5 to 7)
 which(survey_responses %in% 5:7)
 ```
 
-**### Question 2:**
+**###Question 2:**
 Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at *[Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)*
 
 #### Question 2.1
@@ -146,9 +146,44 @@ library(readr)
 covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 ```
 
-#### Question 3.1
+#### Question 3.2
+This question asked for an area specific table to be generated. Here **Brentwood** (Essex) COVID19 is 
+presented. Brentwood Borugh Council (COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937] 
 
+```{r message = FALSE, warning = FALSE}
+# create a complete table containg a row for each day and area, replace Na
+# with the value available for the previous date
+# Resulting table will be stored in the new variable 
+# brentwood_complete_covide_data 
+Brentwood_complete_covid_data_a <-covid_data %>%
+  #selects extracts wanted columns 
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate, 
+                cumCasesBySpecimenDate)%>%
+  # group by specimen_data & area_name leads to each area_name having a row 
+  # per specimen data  
+  dplyr::group_by(specimen_date, area_name) %>%
+  # tidyr :: fill replace NA values with the values from the previous row 
+  # default direction is down
+  tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
+  # replace_na replaces any reamining NA with 0 
+  tidyr::replace_na()%>%
+  # dplyr :: filter subsets the area_name to Bentwood 
+  dplyr::filter(area_name == "Brentwood")%>%
+  # converting to a data.frame as initally when trying to drop area_name using
+  # dplyr::select (-area_number) got an error message 'adding missing grouping 
+  # variables error: area_number so I converted it to a data frame
+  data.frame()%>%
+  # then drop area_name using select 
+  dplyr::select(-area_name) %>%
+  # Then converted back to a tibble 
+  as_tibble()
+```
 
+#### Question 3.3
+
+#### Question 3.4
+
+**### Question 4**
 
 
 
