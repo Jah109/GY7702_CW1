@@ -148,10 +148,11 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 
 #### Question 3.2
 This question asked for an area specific table to be generated. Here **Brentwood** (Essex) COVID19 is 
-presented. Brentwood Borugh Council (COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937] 
+presented. 
+Brentwood Borough Council (COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937] 
 
 ```{r message = FALSE, warning = FALSE}
-# create a complete table containg a row for each day and area, replace Na
+# create a complete table containing a row for each day and area, replace Na
 # with the value available for the previous date
 # Resulting table will be stored in the new variable 
 # brentwood_complete_covide_data 
@@ -165,11 +166,11 @@ Brentwood_complete_covid_data_a <-covid_data %>%
   # tidyr :: fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
-  # replace_na replaces any reamining NA with 0 
+  # replace_na replaces any remaining NA with 0 
   tidyr::replace_na()%>%
   # dplyr :: filter subsets the area_name to Bentwood 
   dplyr::filter(area_name == "Brentwood")%>%
-  # converting to a data.frame as initally when trying to drop area_name using
+  # converting to a data.frame as initially when trying to drop area_name using
   # dplyr::select (-area_number) got an error message 'adding missing grouping 
   # variables error: area_number so I converted it to a data frame
   data.frame()%>%
@@ -180,6 +181,27 @@ Brentwood_complete_covid_data_a <-covid_data %>%
 ```
 
 #### Question 3.3
+# load library lubridate
+
+```{r message = FALSE, warning = FALSE}
+library("lubridate")
+```
+
+
+```{r message = FALSE, warning = FALSE}
+# start from copy Brentwood_day_before 
+Brentwood_day_before <- Brentwood_complete_covid_data %>%
+  # mutate specimen_date using lubridate 
+  # format of ymd is specified then - 1 day 
+  # as.character converts date into character string 
+ dplyr::mutate(day_before = as.character(ymd(specimen_date - 1 ))) %>%
+  # drop specimen_date and cumCasesBySpecimenDate columns 
+  dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
+  # Rename newCasesBySpecimenDate to newCases_day_before 
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) %>%
+  # join Brentwood_day_before with Brentwood_complete_covid_data
+  # where specimen_date is equal to day_before using inner_join
+```
 
 #### Question 3.4
 

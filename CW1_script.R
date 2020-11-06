@@ -101,7 +101,7 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 # with the value available for the previous date
 # Resulting table will be stored in the new variable 
 # brentwood_complete_covide_data 
-Brentwood_complete_covid_data_a <-covid_data %>%
+Brentwood_complete_covid_data <-covid_data %>%
   #selects extracts wanted columns 
   dplyr::select(specimen_date, area_name, newCasesBySpecimenDate, 
                 cumCasesBySpecimenDate)%>%
@@ -123,20 +123,48 @@ Brentwood_complete_covid_data_a <-covid_data %>%
   dplyr::select(-area_name) %>%
   # Then converted back to a tibble 
   as_tibble() 
-  
-  
-  # 3.3 ---------------------------------------------------------------------
-# copy of Brentwood_complete_covid_data named Brentwood_day_before 
-Brentwood_day_before <- Brentwood_complete_covid_data
 
-#load library lubridate
+# 3.3 ---------------------------------------------------------------------
+# copy of Brentwood_complete_covid_data named Brentwood_day_before 
+Brentwood_day_before 
+
+# load library lubridate
 library("lubridate")
 
+# start from copy Brentwood_day_before 
+Brentwood_day_before <- Brentwood_complete_covid_data %>%
+  # mutate specimen_date using lubridate 
+  # format of ymd is specified then - 1 day 
+  # as.character converts date into character string 
+ dplyr::mutate(day_before = as.character(ymd(specimen_date - 1 ))) %>%
+  # drop specimen_date and cumCasesBySpecimenDate columns 
+  dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
+  # Rename newCasesBySpecimenDate to newCases_day_before 
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) %>%
+  # join Brentwood_day_before with Brentwood_complete_covid_data
+  # where specimen_date is equal to day_before using inner_join
+  
+  Brentwood_covid_development <- dplyr::right_join(Brentwood_day_before,
+                                                  Brentwood_complete_covid_data,
+                                                  by =c("specimen_date" = 
+                                                          "day_before"))
+                                               
+  
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 
-
-
-
-
-
-# set up a repository on git hub to get maximum marks, include link on Rmarkdown 
-# on the finial repository 
