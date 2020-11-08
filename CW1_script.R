@@ -108,6 +108,8 @@ Brentwood_complete_covid_data <-covid_data %>%
   # group by specimen_data & area_name leads to each area_name having a row 
   # per specimen data  
   dplyr::group_by(specimen_date, area_name) %>%
+  # mutates specimen_date from date to character value  
+  dplyr::mutate(specimen_date = as.character(specimen_date))%>%
   # tidyr :: fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
@@ -121,9 +123,11 @@ Brentwood_complete_covid_data <-covid_data %>%
   data.frame()%>%
   # then drop area_name using select 
   dplyr::select(-area_name) %>%
+  # converts specimen_date to character to enable table join in question 3.3.
   # Then converted back to a tibble 
   as_tibble() 
 
+print(Brentwood_complete_covid_data)
 # 3.3 ---------------------------------------------------------------------
 
 # load library lubridate
@@ -138,17 +142,24 @@ Brentwood_day_before <- Brentwood_complete_covid_data %>%
   # drop specimen_date and cumCasesBySpecimenDate columns 
   dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
   # Rename newCasesBySpecimenDate to newCases_day_before 
-  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) %>%
-  # join Brentwood_day_before with Brentwood_complete_covid_data
-  # where specimen_date is equal to day_before using inner_join
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) 
   
-  Brentwood_covid_development <- dplyr::right_join(Brentwood_day_before,
-                                                  Brentwood_complete_covid_data,
-                                                  by =c("specimen_date" = 
-                                                          "day_before"))
-                                               
-  
-  
+
+# join Brentwood_day_before with Brentwood_complete_covid_data
+# where specimen_date is equal to day_before using left_join
+Brentwood_covid_development <-dplyr::left_join(Brentwood_day_before, 
+                                                Brentwood_complete_covid_data,
+                                                  by =c("day_before"= 
+                                                        "specimen_date")) %>%
+  # new column containing the number of new cases as a percentage of the number
+  # of new  cases of the day before 
+  dplyr::mutate(percentage_new_cases = 
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) 
+ 
+                                                   
+
+
+
 
 
   
