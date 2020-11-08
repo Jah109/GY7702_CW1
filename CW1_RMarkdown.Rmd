@@ -149,33 +149,37 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 #### Question 3.2
 This question asked for an area specific table to be generated. Here **Brentwood** (Essex) COVID19 is 
 presented. 
-Brentwood Borough Council (COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937] 
+Brentwood Borough Council *(COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937]*
 
 ```{r message = FALSE, warning = FALSE}
 # create a complete table containing a row for each day and area, replace Na
 # with the value available for the previous date
 # Resulting table will be stored in the new variable 
 # brentwood_complete_covide_data 
-Brentwood_complete_covid_data_a <-covid_data %>%
+Brentwood_complete_covid_data <-covid_data %>%
   #selects extracts wanted columns 
   dplyr::select(specimen_date, area_name, newCasesBySpecimenDate, 
                 cumCasesBySpecimenDate)%>%
   # group by specimen_data & area_name leads to each area_name having a row 
   # per specimen data  
   dplyr::group_by(specimen_date, area_name) %>%
+  # mutates specimen_date from date to character in order to joint table in 
+  # question 3.3
+  dplyr::mutate(specimen_date = as.character(specimen_date))%>%
   # tidyr :: fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
-  # replace_na replaces any remaining NA with 0 
+  # replace_na replaces any reamining NA with 0 
   tidyr::replace_na()%>%
   # dplyr :: filter subsets the area_name to Bentwood 
   dplyr::filter(area_name == "Brentwood")%>%
-  # converting to a data.frame as initially when trying to drop area_name using
+  # converting to a data.frame as initally when trying to drop area_name using
   # dplyr::select (-area_number) got an error message 'adding missing grouping 
   # variables error: area_number so I converted it to a data frame
   data.frame()%>%
   # then drop area_name using select 
   dplyr::select(-area_name) %>%
+  # converts specimen_date to character to enable table join in question 3.3.
   # Then converted back to a tibble 
   as_tibble()
 ```
@@ -183,11 +187,14 @@ Brentwood_complete_covid_data_a <-covid_data %>%
 #### Question 3.3
 # load library lubridate
 
+Initally, library [lubdridate](https://lubridate.tidyverse.org/) is loaded to
+aid with date format.
 ```{r message = FALSE, warning = FALSE}
 library("lubridate")
 ```
 
-
+Second part of this question converts day_before into character from following 
+year month and day format and reformats the the table
 ```{r message = FALSE, warning = FALSE}
 # start from copy Brentwood_day_before 
 Brentwood_day_before <- Brentwood_complete_covid_data %>%
@@ -198,14 +205,32 @@ Brentwood_day_before <- Brentwood_complete_covid_data %>%
   # drop specimen_date and cumCasesBySpecimenDate columns 
   dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
   # Rename newCasesBySpecimenDate to newCases_day_before 
-  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) %>%
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) 
   # join Brentwood_day_before with Brentwood_complete_covid_data
   # where specimen_date is equal to day_before using inner_join
 ```
 
-#### Question 3.4
+Lastly, Brentwood_day_before and Brentwood_complete_covid_data are joined using
+a left join. With day_before being equal to specimen_date. Then a new column is 
+added showing the daily percentage change of cases. Stored in a variable 
+*Brentwood_covid_development*
+```{r message = FALSE, warning = FALSE}
+# join Brentwood_day_before with Brentwood_complete_covid_data
+# where specimen_date is equal to day_before using left_join
+Brentwood_covid_development <-dplyr::left_join(Brentwood_day_before, 
+                                                Brentwood_complete_covid_data,
+                                                  by =c("day_before"= 
+                                                        "specimen_date")) %>%
+  # new column containing the number of new cases as a percentage of the number
+  # of new  cases of the day before 
+  dplyr::mutate(percentage_new_cases = 
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) 
+```
 
-**### Question 4**
+#### Question 3.4
+495 COVID-19 cases were recorded in the Brentwood area between 2020-03-02 to 2020-10-09. Development of cases was not linear instead three distinct phases can be observed. Phase-1 began between the period 2020-03-03 to 2020-03-16, only two cases where recorded. Between 2020-03-17 to 2020-05-14 cases increased rapidly with percentage of new cases of day before peaking at 800%. During phase-3, new cases began to slow and stabilised overall between 2020-05-15 and 2020-08-19. Daily percentage change fell over time (e.g. 200% to 0%). Within this general trend there was some short-scale variability (e.g. 2020-05-17 to 2020-05-21 of 0% to 25% to 133% before returning to 0%). Stabilisation of cases, during phase-2, was short lived with phase-3 mirroring the initial phase-1 development of new cases starting from 2020-08-20. During Phase-3 percentage of new cases was rapidly rising averaging 100.71% daily increase, a higher magnitude than phase-1 (i.e 84%). 
+
+**###Question 4**
 
 
 Importing population per local authority and COVID19 case data 
@@ -225,5 +250,5 @@ covid_cases_lad_pop <- dplyr::rename(LAD_pop,area_name = lad19_area_name) %>%
 dplyr::left_join(LAD_covid_cases, LAD_pop, by = "area_name")
 ```
 
-#### Description and Interpretation 
+####Description and Interpretation 
 
