@@ -36,16 +36,17 @@ survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 7, 5, NA, 5,
 #### Question 1.1:
 
 ```{r message = FALSE, warning = FALSE}
-# specify the survey_response variable 
+# Starting from the vector Survey_responses
 survey_responses %>%
-  # using na.omit removes NA values from the vector 
+   # first omits NAs from the vector 
   na.omit() %>%
-  # is. element will return logical output, if 7 or completely agree was answered in the 
-  # survey it will be returned as TRUE 
-  is.element(7) %>%
-  # is. element will return logical output, if 1 or completely agree was answered in the 
-  # survey it will be returned as TRUE
-  is.element(1)
+  # using %in% and c(1,7) will check each value for either completely disagrees 
+  # or completely agrees
+  # as checking for specific values, 0 will be FALSE  
+  (function(x) x %in% c(1,7))
+
+
+  
 ```
 #### Question 1.2
 Extract the indexes who at least somewhat agreed or more (values 5 to 7)
@@ -240,7 +241,7 @@ Brentwood_covid_development <- dplyr::left_join(Brentwood_complete_covid_data_co
 # a number of values in the percentage_new_cases returns Inf, Inf is a product
 # of when there are no newCases_day_before 
 # will print Brentwood_covid_development, with 20 lines being shown 
-print(Brentwood_covid_development, n = 40)
+
 ```
 
 
@@ -251,7 +252,7 @@ print(Brentwood_covid_development, n = 40)
 
 **###Question 4**
 
-Importing population per local authority and COVID19 case data 
+
 ```{r message = FALSE, warning = FALSE}
 # import lad19_population data and assigned to a new variable LAD_pop 
 LAD_pop<- readr::read_csv("lad19_population.csv")
@@ -268,5 +269,27 @@ covid_cases_lad_pop <- dplyr::rename(LAD_pop,area_name = lad19_area_name) %>%
 dplyr::left_join(LAD_covid_cases, LAD_pop, by = "area_name")
 ```
 
+**Aim of Analysis**
+
+* To examine if there is a north south divide in England of the development of COVID19 cases over time
+
+**Objectives**
+
+* To find a northern local authority district with similar population (~77,032) to Brentwood (my assigned area) 
+* Compare the rate of change in COVID19 Cases 
+
+
+```{r message = FALSE, warning = FALSE}
+# Created LAD_selection 
+LAD_selection <- LAD_pop %>%
+  # arranged by population and area code enabled a local authority district to be 
+  # selected of similar size to Brentwood 
+  dplyr::arrange(area_population, area_code)
+```
+
+**[Rossendale Borough Council](https://www.rossendale.gov.uk/)** was selected as it had a similar population 
+(71,525) and located in Lancashire. 
+
 ####Description and Interpretation 
+
 
