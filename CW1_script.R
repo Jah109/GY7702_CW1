@@ -109,7 +109,7 @@ Brentwood_complete_covid_data <-covid_data %>%
   # per specimen data  
   dplyr::group_by(specimen_date, area_name) %>%
   # mutates specimen_date from date to character value 
-  dplyr::mutate(specimen_date = as.character(specimen_date))%>%
+
   # tidyr :: fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
