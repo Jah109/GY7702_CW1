@@ -4,16 +4,25 @@ library(knitr)
 
 # Question 1 --------------------------------------------------------------
 # vector survey_responses contains 25 elements 
-survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 2, 5, NA, 5, 
-                      2, 4, NA, 3, 3, 5, NA)
+survey_responses <- c(NA, 5, 4, 4, 5, 2, 4, NA, 6, 3, 5, 7, 1, 5, 5, 5, NA, 5, 
+                      2, 4, NA, 3, 5, 5, NA)
 
 
 # 1.1 ---------------------------------------------------------------------
-survey_responses_NA_ommited <- survey_responses %>%
-  na.omit()
+survey_responses %>%
+  na.omit() %>%
+  (function(x) x %in% c(1,7))
+  
+  
+  
+  na.omit(survey_responses) %in% c(1, 7)
+
+
+
+   
  
-survey_responses <- c(NA, 3, 4, 4, 5, 2, 4, NA, 6, 3, 5, 4, 0, 5, 2, 5, NA, 5, 
-                      2, 4, NA, 3, 3, 5, NA)
+ 
+
 
 
 
@@ -43,7 +52,9 @@ palmerpenguins::penguins %>%
   dplyr::filter(species == "Gentoo"
   ) %>%
   # Sort by descending body mass in g
-  dplyr::arrange(desc(body_mass_g)) 
+  dplyr::arrange(desc(body_mass_g))%>%
+  #shows 10 lines 
+  print(n=10)
 
 # 2.3 ---------------------------------------------------------------------
 # Starts from the entire data set
@@ -86,91 +97,59 @@ palmerpenguins::penguins %>%
   knitr::kable()
   
 
-# Question 3 --------------------------------------------------------------
 
+# question 3------------------------------------------------------------
+library(tidyverse)
 # 3.1 ---------------------------------------------------------------------
-#using readr (part of tidyverse)
-library(readr)
-# reads the .CSV file with the correct directory
-# Imports covid19_cases_20200301_20201017.csv and assings to a new variable
-#covid_data 
-covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
+covid_data <- readr::read_csv("covid19_cases_20200301_20201017.csv")
 
 # 3.2 ---------------------------------------------------------------------
-# create a complete table containg a row for each day and area, replace Na
-# with the value available for the previous date
-# Resulting table will be stored in the new variable 
-# brentwood_complete_covide_data 
-Brentwood_complete_covid_data <-covid_data %>%
-  #selects extracts wanted columns 
-  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate, 
-                cumCasesBySpecimenDate)%>%
-  # group by specimen_data & area_name leads to each area_name having a row 
-  # per specimen data  
-  dplyr::group_by(specimen_date, area_name) %>%
-  # mutates specimen_date from date to character value 
-
-  # tidyr :: fill replace NA values with the values from the previous row 
-  # default direction is down
-  tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
-  # replace_na replaces any reamining NA with 0 
-  tidyr::replace_na()%>%
-  # dplyr :: filter subsets the area_name to Bentwood 
-  dplyr::filter(area_name == "Brentwood")%>%
-  # converting to a data.frame as initally when trying to drop area_name using
-  # dplyr::select (-area_number) got an error message 'adding missing grouping 
-  # variables error: area_number so I converted it to a data frame
-  data.frame()%>%
-  # then drop area_name using select 
+Brentwood_complete_covid_data <- covid_data %>%
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate,
+                cumCasesBySpecimenDate) %>%
+  dplyr::arrange(specimen_date, area_name) %>%
+  tidyr::fill("newCasesBySpecimenDate", "cumCasesBySpecimenDate") %>%
+  tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
+  dplyr::filter(area_name == "Brentwood") %>%
   dplyr::select(-area_name) %>%
-  # converts specimen_date to character to enable table join in question 3.3.
-  # Then converted back to a tibble 
-  as_tibble() 
-
-print(Brentwood_complete_covid_data)
-# 3.3 ---------------------------------------------------------------------
-
-# load library lubridate
-library("lubridate")
-
-# start from copy Brentwood_day_before 
-Brentwood_day_before <- Brentwood_complete_covid_data %>%
-  # mutate specimen_date using lubridate 
-  # format of ymd is specified then - 1 day 
-  # as.character converts date into character string 
-  dplyr::mutate(day_before = as.character(ymd(specimen_date - 1 ))) %>%
-  # drop specimen_date and cumCasesBySpecimenDate columns 
-  dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
-  # Rename newCasesBySpecimenDate to newCases_day_before 
-  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) 
-# join Brentwood_day_before with Brentwood_complete_covid_data
-# where specimen_date is equal to day_before using inner_join
- 
- 
-Brentwood_complete_covid_data %>%
-  dplyr::mutate(specimen_date = as.character(specimen_date))
+  print(n= 8)
   
+  
+print(Brentwood_complete_covid_data)
+ 
+print(Brentwood_complete_covid_data)
+  
+across()
+# 3.3 ---------------------------------------------------------------------
+library(lubridate)
+2020-03-03
 
-# join Brentwood_day_before with Brentwood_complete_covid_data
-# where specimen_date is equal to day_before using left_join
-Brentwood_covid_development <-dplyr::left_join(Brentwood_day_before, 
-                                               Brentwood_complete_covid_data,
-                                               by =c("day_before"= 
-                                                       "specimen_date")) %>%
-  # new column containing the number of new cases as a percentage of the number
-  # of new  cases of the day before 
+Brentwood_day_before <- Brentwood_complete_covid_data %>%
+  dplyr::mutate(day_before = as.character(ymd(specimen_date -1))) %>%
+  dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) 
+
+Brentwood_complete_covid_data_converted <- Brentwood_complete_covid_data %>%
+  dplyr::mutate(across(where(is.Date), as.character)) 
+
+
+Brentwood_covid_development <- dplyr::left_join( Brentwood_day_before,
+                                                 Brentwood_complete_covid_data_converted,
+                                                by =c("day_before"= "specimen_date")) %>%
   dplyr::mutate(percentage_new_cases = 
-                  ((newCasesBySpecimenDate / newCases_day_before)*100)) 
-
-
-ggplot(Brentwood_covid_development, mapping = aes(x = day_before, 
-                                                  y = cumCasesBySpecimenDate)) +  
-  geom_point()+
-  theme(axis.text.x = element_text(angle = 90))
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
+  tidyr::replace_na(list(percentage_new_cases = 0)) 
 
 
 
-# question 4.1 --------------------------------------------------------------
+print(Brentwood_covid_development, n= 40)
+
+
+
+
+
+# import data  --------------------------------------------------------------
 # import lad19_population data and assigned to a new variable LAD_pop 
 LAD_pop<- readr::read_csv("lad19_population.csv")
 # import COVID19 case data and assigned to a new variable LAD_covid_cases 
@@ -179,9 +158,64 @@ LAD_covid_cases <- readr::read_csv("covid19_cases_20200301_20201017.csv")
 
 # need to rename LAD_pop column lad19_area_name to area_name to match
 # LAD_covid_cases table 
-covid_cases_lad_pop <- dplyr::rename(LAD_pop,area_name = lad19_area_name) %>%
-# table join between LAD_pop and LAD_covid_cases 
-dplyr::left_join(LAD_covid_cases, LAD_pop, by = "area_name")
+
+
+# population search -------------------------------------------------------
+LAD_selection <- LAD_pop %>%
+  dplyr::arrange(area_population, area_code)
+
+
+# create comparison tables -------------------------------------------------
+
+
+# Brentwood ---------------------------------------------------------------
+
+Brentwood_covid_data <- covid_data %>%
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate,
+                cumCasesBySpecimenDate) %>%
+  dplyr::arrange(specimen_date, area_name) %>%
+  tidyr::fill("newCasesBySpecimenDate", "cumCasesBySpecimenDate") %>%
+  tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
+  dplyr::filter(area_name == "Brentwood") %>%
+  dplyr::select(-area_name) %>%
+  dplyr::rename("Brentwood_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "Brentwood_new_cases" = "newCasesBySpecimenDate" )
+
+
+# Rossendale --------------------------------------------------------------
+
+
+Rossendale_covid_data <- covid_data %>%
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate,
+                cumCasesBySpecimenDate) %>%
+  dplyr::arrange(specimen_date, area_name) %>%
+  tidyr::fill("newCasesBySpecimenDate", "cumCasesBySpecimenDate") %>%
+  tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
+  dplyr::filter(area_name == "Rossendale") %>%
+  dplyr::select(-area_name) %>%
+  dplyr::rename("Rossendale_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "Rossendale_new_cases" = "newCasesBySpecimenDate")
+
+
+# table join  -------------------------------------------------------------
+
+Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brentwood_covid_data) %>%
+  dplyr::select(specimen_date, Rossendale_Cumulative_cases, Brentwood_Cumulative_cases) %>%
+  dplyr::arrange(specimen_date) 
+                
+  
+
+  
+  
+  
+
+
+
+
+
+
 
 
 
