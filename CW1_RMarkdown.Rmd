@@ -146,10 +146,12 @@ library(readr)
 covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 ```
 
+Tyding the data 
+
+
 #### Question 3.2
-This question asked for an area specific table to be generated. Here **Brentwood** (Essex) COVID19 is 
-presented. 
-Brentwood Borough Council *(COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937]*
+This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of   
+Brentwood Borough Council *(COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937]* can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
 
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table named Brentwood_complete_covid_data from manipulation of 
@@ -164,19 +166,20 @@ Brentwood_complete_covid_data <- covid_data %>%
   # fill replace NA values with the values from the previous row 
   # default direction is down
   tidyr::fill(newCasesBySpecimenDate, cumCasesBySpecimenDate) %>%
-  # replace_na replaces any reamining NA with 0 
-  tidyr::replace_na() %>%
+  # replaces any remaining NA with 0 
+ tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
   # filter data to select on values when the area_name equals Bentwood 
   dplyr::filter(area_name == "Brentwood") %>%
   # drops column area_name using select 
   dplyr::select(-area_name)%>%
-  # slice_head to print a representive number of rows 
-  dplyr::slice_head(n= 8)
+  # prints a representative number of rows 
+  print(n= 8)
 
 ```
 
 #### Question 3.3
-# load library lubridate
+#### load library lubridate
 
 Initally, library [lubdridate](https://lubridate.tidyverse.org/) is loaded to
 aid with date format.
@@ -205,11 +208,9 @@ Brentwood_day_before <- Brentwood_complete_covid_data %>%
 Initially, when I tried to join the tables *Brentwood_complete_covid_data* with 
 *Brentwood_day_before* this didn't work as each column in the join was in a 
 different data type <date> and <Character>. So I tried:
-1. converting column specimen_date in *Brentwood_complete_covid_data*
-+ this resulted in an error when attempted to convert the date to character as specified by the question in the table *Brentwood_day_before* 
-2. Making a new table *Brentwood_complete_covid_data_converted* before the table join
-+ This was successful in enabling the table join 
-+ However it is a messy way round of executing this column data type conversion 
+
+1. converting column specimen_date in *Brentwood_complete_covid_data* resulting in an error when attempted to convert the date to character as specified by the question in the table *Brentwood_day_before* 
+2. Making a new table *Brentwood_complete_covid_data_converted* before the table join wassuccessful in enabling the table join. However, it is a messy way round of executing this column data type conversion 2
 
 ```{r message = FALSE, warning = FALSE}
 # New table Brentwood_complete_covid_data_converted created 
@@ -231,16 +232,24 @@ Brentwood_covid_development <- dplyr::left_join(Brentwood_complete_covid_data_co
                                                 by =c("specimen_date" = "day_before")) %>%
   # using mutate new column was created showing the percentage day on day change 
   dplyr::mutate(percentage_new_cases = 
-                  ((newCasesBySpecimenDate / newCases_day_before)*100)) 
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
+  # Replaces all NaN with 0 
+  tidyr::replace_na(list(percentage_new_cases = 0)) %>%
+  knitr::kable()
+
+# a number of values in the percentage_new_cases returns Inf, Inf is a product
+# of when there are no newCases_day_before 
+# will print Brentwood_covid_development, with 20 lines being shown 
+print(Brentwood_covid_development, n = 40)
 ```
 
 
 
 #### Question 3.4
+
 495 COVID-19 cases were recorded in the Brentwood area between 2020-03-02 to 2020-10-09. Development of cases was not linear instead three distinct phases can be observed. Phase-1 began between the period 2020-03-03 to 2020-03-16, only two cases where recorded. Between 2020-03-17 to 2020-05-14 cases increased rapidly with percentage of new cases of day before peaking at 800%. During phase-3, new cases began to slow and stabilised overall between 2020-05-15 and 2020-08-19. Daily percentage change fell over time (e.g. 200% to 0%). Within this general trend there was some short-scale variability (e.g. 2020-05-17 to 2020-05-21 of 0% to 25% to 133% before returning to 0%). Stabilisation of cases, during phase-2, was short lived with phase-3 mirroring the initial phase-1 development of new cases starting from 2020-08-20. During Phase-3 percentage of new cases was rapidly rising averaging 100.71% daily increase, a higher magnitude than phase-1 (i.e 84%). 
 
 **###Question 4**
-
 
 Importing population per local authority and COVID19 case data 
 ```{r message = FALSE, warning = FALSE}
