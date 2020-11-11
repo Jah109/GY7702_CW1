@@ -231,14 +231,11 @@ Brentwood_covid_development <- dplyr::left_join(Brentwood_complete_covid_data_co
                                                 by =c("specimen_date" = "day_before")) %>%
   # using mutate new column was created showing the percentage day on day change 
   dplyr::mutate(percentage_new_cases = 
-                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>% 
   # Replaces all NaN with 0 
-  tidyr::replace_na(list(percentage_new_cases = 0))
-  
-
-# a number of values in the percentage_new_cases returns Inf, Inf is a product
-# of when there are no newCases_day_before 
-# will print Brentwood_covid_development, with 20 lines being shown 
+  tidyr::replace_na(list(percentage_new_cases = 0)) %>%
+  # prints table 
+  print(n= 5)
 
 ```
 
@@ -345,7 +342,11 @@ Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brent
   dplyr::arrange(specimen_date) %>%
   # creates new column to show daily percentage difference 
   dplyr::mutate(daily_percentage_difference = (Rossendale_Cumulative_cases - Brentwood_Cumulative_cases)/
-                  ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100)
+                  ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100) %>%
+  dplyr::slice_head(n = 6) %>%
+  knitr::kable() %>%
+  print()
+  
 
 
 ```
