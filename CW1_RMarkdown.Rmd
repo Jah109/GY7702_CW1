@@ -7,24 +7,24 @@ output: pdf_document
 # Introduction 
 This document has been created to increase the **reproducibility** of this coursework 
 assignment, written in RMarkdown. To support the reproducibility of the document
-please refer to the *[GitHub data repository](https://github.com/Jah109/GY7702_CW1.git)*
+please refer to the \textcolor{blue}(*[GitHub data repository](https://github.com/Jah109/GY7702_CW1.git)*)
 for the commits that document the development of this Coursework 1
 
 ## Libraries 
-This coursework use the library **tidyverse**
+This coursework use the library [**tidyverse**](https://www.tidyverse.org/)
 ```{r message = FALSE, warning = FALSE}
 library(tidyverse)
 ```
-Also the library **knitr**
+Also the library [**knitr**](https://yihui.org/knitr/)
 ```{r message = FALSE, warning = FALSE}
 library(knitr)
 ```
 
-Other libraries are also used for specific question for instance in question 2 the library **palmerpenguins** these specific libraries will be referred to within each question  
+Other libraries are also used for specific question for instance in question 2 the library [**palmerpenguins**](https://github.com/allisonhorst/palmerpenguins) and in question 3 [Lubridate](https://lubridate.tidyverse.org/)
 
-**## Questions** 
+## **Questions** 
 
-**### Question 1:** 
+### **Question 1:** 
 Question 1 deals with a vector of 25 numbers between 1 and 7, with each value representing answers to survey questions. Some values are missing. Vector was defined by the question: 
 
 ```{r message = FALSE, warning = FALSE}
@@ -57,7 +57,7 @@ Extract the indexes who at least somewhat agreed or more (values 5 to 7)
 which(survey_responses %in% 5:7)
 ```
 
-**###Question 2:**
+### **Question 2:**
 Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at *[Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)*
 
 #### Question 2.1
@@ -131,7 +131,7 @@ palmerpenguins::penguins %>%
 ```
 
 
-**### Question 3:**
+### **Question 3:**
 
 Question 3 looks at a topical data set of new and cumulative **COVD19** cases in the UK between March 1st and October 17th 2020. **COVID19** data is sourced from the [HM Government Coronavirus in the UK](https://coronavirus-staging.data.gov.uk/details/cases) 
 
@@ -147,12 +147,9 @@ library(readr)
 covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 ```
 
-Tyding the data 
-
-
 #### Question 3.2
 This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of   
-Brentwood Borough Council *(COVID19 response and information)[https://www.brentwood.gov.uk/index.php?cid=2937]* can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
+Brentwood Borough Council *(COVID19 response and information)*[https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
 
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table named Brentwood_complete_covid_data from manipulation of 
@@ -180,16 +177,16 @@ Brentwood_complete_covid_data <- covid_data %>%
 ```
 
 #### Question 3.3
-#### load library lubridate
 
-Initally, library [lubdridate](https://lubridate.tidyverse.org/) is loaded to
+Initally, library (lubdridate)[https://lubridate.tidyverse.org/] is loaded to
 aid with date format.
+
 ```{r message = FALSE, warning = FALSE}
 library("lubridate")
 ```
 
 Second part of this question converts day_before into character from following 
-year month and day format and reformats the the table
+year month and day format and reformat the table
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table Brentwood_day_before from manipulation of 
 # Brentwood_complete_covid_data 
@@ -198,12 +195,13 @@ Brentwood_day_before <- Brentwood_complete_covid_data %>%
   # day_before is in character data type in the format year month day 
   # with specimen_date from Brentwood_complete_covid_data - 1  
   dplyr::mutate(day_before = as.character(ymd(specimen_date -1))) %>%
-  # specimen_date and cumCasesBySpecimenDate are droped from the tble 
+  # specimen_date and cumCasesBySpecimenDate are dropped from the table 
   dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
   #newCasesBySpecimenDate are renamed to newCases_day_before 
-  dplyr::rename(newCases_day_before = newCasesBySpecimenDate) %>% 
-  # slice_head to print a representive number of rows 
-  dplyr::slice_head(n= 8)
+  dplyr::rename(newCases_day_before = newCasesBySpecimenDate)
+  
+print(Brentwood_day_before)
+  
 ```
 
 Initially, when I tried to join the tables *Brentwood_complete_covid_data* with 
@@ -211,7 +209,7 @@ Initially, when I tried to join the tables *Brentwood_complete_covid_data* with
 different data type <date> and <Character>. So I tried:
 
 1. converting column specimen_date in *Brentwood_complete_covid_data* resulting in an error when attempted to convert the date to character as specified by the question in the table *Brentwood_day_before* 
-2. Making a new table *Brentwood_complete_covid_data_converted* before the table join wassuccessful in enabling the table join. However, it is a messy way round of executing this column data type conversion 2
+2. Making a new table *Brentwood_complete_covid_data_converted* before the table join was successful in enabling the table join. However, it is a messy way round of executing this column data type conversion 
 
 ```{r message = FALSE, warning = FALSE}
 # New table Brentwood_complete_covid_data_converted created 
@@ -235,8 +233,8 @@ Brentwood_covid_development <- dplyr::left_join(Brentwood_complete_covid_data_co
   dplyr::mutate(percentage_new_cases = 
                   ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
   # Replaces all NaN with 0 
-  tidyr::replace_na(list(percentage_new_cases = 0)) %>%
-  knitr::kable()
+  tidyr::replace_na(list(percentage_new_cases = 0))
+  
 
 # a number of values in the percentage_new_cases returns Inf, Inf is a product
 # of when there are no newCases_day_before 
@@ -250,23 +248,14 @@ Brentwood_covid_development <- dplyr::left_join(Brentwood_complete_covid_data_co
 
 495 COVID-19 cases were recorded in the Brentwood area between 2020-03-02 to 2020-10-09. Development of cases was not linear instead three distinct phases can be observed. Phase-1 began between the period 2020-03-03 to 2020-03-16, only two cases where recorded. Between 2020-03-17 to 2020-05-14 cases increased rapidly with percentage of new cases of day before peaking at 800%. During phase-3, new cases began to slow and stabilised overall between 2020-05-15 and 2020-08-19. Daily percentage change fell over time (e.g. 200% to 0%). Within this general trend there was some short-scale variability (e.g. 2020-05-17 to 2020-05-21 of 0% to 25% to 133% before returning to 0%). Stabilisation of cases, during phase-2, was short lived with phase-3 mirroring the initial phase-1 development of new cases starting from 2020-08-20. During Phase-3 percentage of new cases was rapidly rising averaging 100.71% daily increase, a higher magnitude than phase-1 (i.e 84%). 
 
-**###Question 4**
+### **Question 4**
 
-
+Importing LAD data sets: 
 ```{r message = FALSE, warning = FALSE}
 # import lad19_population data and assigned to a new variable LAD_pop 
 LAD_pop<- readr::read_csv("lad19_population.csv")
 # import COVID19 case data and assigned to a new variable LAD_covid_cases 
 LAD_covid_cases <- readr::read_csv("covid19_cases_20200301_20201017.csv")
-```
-
-Carrying out table join for LAD_pop and LAD_covid_cases 
-```{r message = FALSE, warning = FALSE}
-# need to rename LAD_pop column lad19_area_name to area_name to match
-# LAD_covid_cases table 
-covid_cases_lad_pop <- dplyr::rename(LAD_pop,area_name = lad19_area_name) %>%
-# table join between LAD_pop and LAD_covid_cases 
-dplyr::left_join(LAD_covid_cases, LAD_pop, by = "area_name")
 ```
 
 **Aim of Analysis**
@@ -275,26 +264,106 @@ dplyr::left_join(LAD_covid_cases, LAD_pop, by = "area_name")
 
 **Objectives**
 
-* To find a northern local authority district with similar population (~77,032) to Brentwood (my assigned area) 
-* Compare the rate of change in COVID19 Cases 
-
+* To select a northern local authority district with similar population (~77,032) to Brentwood (my assigned area) 
+* Compare the magnitude of change in COVID19 Cases 
 
 ```{r message = FALSE, warning = FALSE}
 # Created LAD_selection 
 LAD_selection <- LAD_pop %>%
   # arranged by population and area code enabled a local authority district to be 
   # selected of similar size to Brentwood 
-  dplyr::arrange(area_population, area_code)
+  dplyr::arrange(area_population)
 ```
+
 
 **[Rossendale Borough Council](https://www.rossendale.gov.uk/)** was selected as it had a similar population 
 (71,525) and located in Lancashire. 
 
-####Description and Interpretation 
+```{r message = FALSE, warning = FALSE}
+# Creates new a new tibble from imported data 
+Rossendale_covid_data <- covid_data %>%
+  # selects desired columns 
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate,
+                cumCasesBySpecimenDate) %>%
+  # arrange rows 
+  dplyr::arrange(specimen_date, area_name) %>%
+  # fill down all NAs
+  tidyr::fill("newCasesBySpecimenDate", "cumCasesBySpecimenDate") %>%
+  # when unable to fill NA, NA will be equal to 0 
+  tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
+  # filter so that only Rossendale is present in the tibble 
+  dplyr::filter(area_name == "Rossendale") %>%
+  # drops the area_name column 
+  dplyr::select(-area_name) %>%
+  # rename column in order to identify columns in the fininal tibble 
+  dplyr::rename("Rossendale_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "Rossendale_new_cases" = "newCasesBySpecimenDate")
+```
+
+**Repeat above step for Brentwood**
+```{r message = FALSE, warning = FALSE}
+# Creates new a new tibble from imported data 
+Brentwood_covid_data <- covid_data %>%
+  # selects desired columns 
+  dplyr::select(specimen_date, area_name, newCasesBySpecimenDate,
+                cumCasesBySpecimenDate) %>%
+  # arrange rows
+  dplyr::arrange(specimen_date, area_name) %>%
+  # fill down all NAs
+  tidyr::fill("newCasesBySpecimenDate", "cumCasesBySpecimenDate") %>%
+  # when unable to fill NA, NA will be equal to 0 
+  tidyr::replace_na(list("newCasesBySpecimenDate" = 0,
+                         "cumCasesBySpecimenDate"= 0)) %>%
+  dplyr::filter(area_name == "Brentwood") %>%
+  # drops the area_name column 
+  dplyr::select(-area_name) %>%
+   # rename column in order to identify columns in the fininal tibble 
+  dplyr::rename("Brentwood_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "Brentwood_new_cases" = "newCasesBySpecimenDate" )
+
+```
+
+
+#### Description and Interpretation 
 
 Two English local authority districts, Brentwood (Essex) and Rossendale (Lancashire) were compared. To assess the north-south difference in the development of COVID19 cases. During the period 2020-03-03 to 2020-10-10. Brentwood and Rossendale were selected as both have a similar population, 77,032 and 71,525 respectively. Comparison of daily cumulative percentage difference and reported cases was used to explore the magnitude of change between Brentwood and Rossendale. 
 
 At end of 2020-10-10, Rossendale recorded 1105 cases in stark contrast to Brentwood recording just 499 cases. Despite Rossendale, not recording the first case until 2020-03-20 seventeen days before Brentwood (8 cases). Daily percentage difference between Brentwood and Rossendale steadily decreases becoming even (0.00 %) on 2020-05-17. Before cases reported in Rossendale, slow at first, begin to accelerate reaching 75% on 2020-10-10. Reflected in average cases per week in early October, 43 and 8 in Rossendale and Brentwood respectively. 
 
  A north-south divided is demonstrated by the comparison of cumulative cases and daily percentage difference, of Brentwood and Rossendale. Driving this regional disparity is ‘southern/ London centric’ government view of easing the first national lockdown, in early July 2020. Development of cases in Brentwood continued to slow (33% between 2020-05-01 to 2020-07-04) in contrast Rossendale had further proliferation of cases (40% between 2020-05-01 to 2020-07-04). Differences in COVID19 case development over time strongly suggest that national lockdown restrictions were lift too early. Other factors may also contribute to the north-south 
+
+**Final Table for Description and Interpretation**
+
+```{r message = FALSE, warning = FALSE}
+# Create new table named Rossendale_Brentwood_Comparison
+# using a full_join, tables joined by specimen date 
+Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brentwood_covid_data) %>%
+  # select desired columns 
+  dplyr::select(specimen_date, Rossendale_Cumulative_cases, Rossendale_new_cases,Brentwood_Cumulative_cases,Brentwood_new_cases) %>%
+  # arranges rows by specimen date 
+  dplyr::arrange(specimen_date) %>%
+  # creates new column to show daily percentage difference 
+  dplyr::mutate(daily_percentage_difference = (Rossendale_Cumulative_cases - Brentwood_Cumulative_cases)/
+                  ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
