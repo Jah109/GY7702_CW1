@@ -42,7 +42,7 @@ survey_responses %>%
   na.omit() %>%
   # using %in% and c(1,7) will check each value for either completely disagrees 
   # or completely agrees
-  # as checking for specific values, 0 will be FALSE  
+  # as checking for specific values, 0 will be also FALSE  
   (function(x) x %in% c(1,7))
 
 
@@ -292,4 +292,9 @@ LAD_selection <- LAD_pop %>%
 
 ####Description and Interpretation 
 
+Two English local authority districts, Brentwood (Essex) and Rossendale (Lancashire) were compared. To assess the north-south difference in the development of COVID19 cases. During the period 2020-03-03 to 2020-10-10. Brentwood and Rossendale were selected as both have a similar population, 77,032 and 71,525 respectively. Comparison of daily cumulative percentage difference and reported cases was used to explore the magnitude of change between Brentwood and Rossendale. 
+
+At end of 2020-10-10, Rossendale recorded 1105 cases in stark contrast to Brentwood recording just 499 cases. Despite Rossendale, not recording the first case until 2020-03-20 seventeen days before Brentwood (8 cases). Daily percentage difference between Brentwood and Rossendale steadily decreases becoming even (0.00 %) on 2020-05-17. Before cases reported in Rossendale, slow at first, begin to accelerate reaching 75% on 2020-10-10. Reflected in average cases per week in early October, 43 and 8 in Rossendale and Brentwood respectively. 
+
+ A north-south divided is demonstrated by the comparison of cumulative cases and daily percentage difference, of Brentwood and Rossendale. Driving this regional disparity is ‘southern/ London centric’ government view of easing the first national lockdown, in early July 2020. Development of cases in Brentwood continued to slow (33% between 2020-05-01 to 2020-07-04) in contrast Rossendale had further proliferation of cases (40% between 2020-05-01 to 2020-07-04). Differences in COVID19 case development over time strongly suggest that national lockdown restrictions were lift too early. Other factors may also contribute to the north-south 
 
