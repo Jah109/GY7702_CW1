@@ -7,8 +7,8 @@ output: pdf_document
 # Introduction 
 This document has been created to increase the **reproducibility** of this coursework 
 assignment, written in RMarkdown. To support the reproducibility of the document
-please refer to the \textcolor{blue}(*[GitHub data repository](https://github.com/Jah109/GY7702_CW1.git)*)
-for the commits that document the development of this Coursework 1
+please refer to the [**GitHub data repository**](https://github.com/Jah109/GY7702_CW1.git)
+for the commits that document the development of this Coursework 1. 
 
 ## Libraries 
 This coursework use the library [**tidyverse**](https://www.tidyverse.org/)
@@ -20,7 +20,7 @@ Also the library [**knitr**](https://yihui.org/knitr/)
 library(knitr)
 ```
 
-Other libraries are also used for specific question for instance in question 2 the library [**palmerpenguins**](https://github.com/allisonhorst/palmerpenguins) and in question 3 [Lubridate](https://lubridate.tidyverse.org/)
+Other libraries are also used for specific question for instance in question 2 the library [**palmerpenguins**](https://github.com/allisonhorst/palmerpenguins) and in question 3 [**Lubridate**](https://lubridate.tidyverse.org/)
 
 ## **Questions** 
 
@@ -58,7 +58,7 @@ which(survey_responses %in% 5:7)
 ```
 
 ### **Question 2:**
-Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at *[Palmerpenguins GitHub Repositry](https://github.com/allisonhorst/palmerpenguins.git)*
+Question 2 looks data from Adélie, Chinstrap, and Gentoo penguins observed on islands in the Palmer Archipelago near Palmer Station, Antarctica. Palmerpenguins library can be found at [**Palmerpenguins GitHub Repositry**](https://github.com/allisonhorst/palmerpenguins.git)
 
 #### Question 2.1
 Question 2.1 ask for the library (palmerpenguins) to be installed and loaded 
@@ -133,9 +133,10 @@ palmerpenguins::penguins %>%
 
 ### **Question 3:**
 
-Question 3 looks at a topical data set of new and cumulative **COVD19** cases in the UK between March 1st and October 17th 2020. **COVID19** data is sourced from the [HM Government Coronavirus in the UK](https://coronavirus-staging.data.gov.uk/details/cases) 
+Question 3 looks at a topical data set of new and cumulative **COVD19** cases in the UK between March 1st and October 17th 2020. **COVID19** data is sourced from the [**HM Government Coronavirus in the UK**](https://coronavirus-staging.data.gov.uk/details/cases) 
 
 #### Question 3.1
+
 Question 3.1 asks for the data covid19 cases to be loaded  
 
 ```{r message = FALSE, warning = FALSE}
@@ -148,8 +149,8 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 ```
 
 #### Question 3.2
-This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of   
-Brentwood Borough Council *(COVID19 response and information)*[https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
+
+This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of Brentwood Borough Council (**COVID19 response and information**) [https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
 
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table named Brentwood_complete_covid_data from manipulation of 
@@ -178,7 +179,7 @@ Brentwood_complete_covid_data <- covid_data %>%
 
 #### Question 3.3
 
-Initally, library (lubdridate)[https://lubridate.tidyverse.org/] is loaded to
+Initially, library (**lubdridate**)[https://lubridate.tidyverse.org/] is loaded to
 aid with date format.
 
 ```{r message = FALSE, warning = FALSE}
@@ -273,7 +274,7 @@ LAD_selection <- LAD_pop %>%
 ```
 
 
-**[Rossendale Borough Council](https://www.rossendale.gov.uk/)** was selected as it had a similar population 
+[**Rossendale Borough Council**](https://www.rossendale.gov.uk/) was selected as it had a similar population 
 (71,525) and located in Lancashire. 
 
 ```{r message = FALSE, warning = FALSE}
@@ -294,8 +295,8 @@ Rossendale_covid_data <- covid_data %>%
   # drops the area_name column 
   dplyr::select(-area_name) %>%
   # rename column in order to identify columns in the fininal tibble 
-  dplyr::rename("Rossendale_Cumulative_cases" = "cumCasesBySpecimenDate", 
-                "Rossendale_new_cases" = "newCasesBySpecimenDate")
+  dplyr::rename("R_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "R_new_cases" = "newCasesBySpecimenDate")
 ```
 
 **Repeat above step for Brentwood**
@@ -316,8 +317,8 @@ Brentwood_covid_data <- covid_data %>%
   # drops the area_name column 
   dplyr::select(-area_name) %>%
    # rename column in order to identify columns in the fininal tibble 
-  dplyr::rename("Brentwood_Cumulative_cases" = "cumCasesBySpecimenDate", 
-                "Brentwood_new_cases" = "newCasesBySpecimenDate" )
+  dplyr::rename("B_Cumulative_cases" = "cumCasesBySpecimenDate", 
+                "B_new_cases" = "newCasesBySpecimenDate" )
 
 ```
 
@@ -337,18 +338,25 @@ At end of 2020-10-10, Rossendale recorded 1105 cases in stark contrast to Brentw
 # using a full_join, tables joined by specimen date 
 Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brentwood_covid_data) %>%
   # select desired columns 
-  dplyr::select(specimen_date, Rossendale_Cumulative_cases, Rossendale_new_cases,Brentwood_Cumulative_cases,Brentwood_new_cases) %>%
+  dplyr::select(specimen_date, R_Cumulative_cases, R_new_cases,B_Cumulative_cases,B_new_cases) %>%
   # arranges rows by specimen date 
   dplyr::arrange(specimen_date) %>%
+  # rename specimen_date date
+  dplyr::rename(Date = specimen_date)%>%
   # creates new column to show daily percentage difference 
-  dplyr::mutate(daily_percentage_difference = (Rossendale_Cumulative_cases - Brentwood_Cumulative_cases)/
-                  ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100) %>%
-  dplyr::slice_head(n = 6) %>%
-  knitr::kable() %>%
-  print()
-  
+  dplyr::mutate(per_daily_diff = (R_Cumulative_cases - B_Cumulative_cases)/
+                  ((R_Cumulative_cases +B_Cumulative_cases)/2)*100) %>%
+  # replace NA with 0 
+   tidyr::replace_na(list("B_Cumulative_cases" = 0,
+                         "R_Cumulative_cases"= 0,
+                         "per_daily_diff" = 0,
+                         "R_new_cases" = 0,
+                         "B_new_cases" = 0)) %>%
+  dplyr::slice_head(n = 20) %>%
+  # improve table formatt 
+  kable()
 
-
+print(Rossendale_Brentwood_Comparison)
 ```
 
 
