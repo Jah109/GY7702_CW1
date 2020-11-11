@@ -124,10 +124,16 @@ across()
 # 3.3 ---------------------------------------------------------------------
 library(lubridate)
 2020-03-03
-
+# Creates a new table Brentwood_day_before from manipulation of 
+# Brentwood_complete_covid_data 
 Brentwood_day_before <- Brentwood_complete_covid_data %>%
+  # using lubridate, a new column day_before is created 
+  # day_before is in character data type in the format year month day 
+  # with specimen_date from Brentwood_complete_covid_data - 1  
   dplyr::mutate(day_before = as.character(ymd(specimen_date -1))) %>%
+  # specimen_date and cumCasesBySpecimenDate are dropped from the table 
   dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
+  #newCasesBySpecimenDate are renamed to newCases_day_before 
   dplyr::rename(newCases_day_before = newCasesBySpecimenDate) 
 
 Brentwood_complete_covid_data_converted <- Brentwood_complete_covid_data %>%
@@ -137,16 +143,21 @@ Brentwood_complete_covid_data_converted <- Brentwood_complete_covid_data %>%
 Brentwood_covid_development <- dplyr::left_join( Brentwood_day_before,
                                                  Brentwood_complete_covid_data_converted,
                                                 by =c("day_before"= "specimen_date")) %>%
-  dplyr::mutate((newCasesBySpecimenDate - newCases_day_before)/
-  ((newCasesBySpecimenDate + newCases_day_before)/2)*100) 
-  tidyr::replace_na(list(percentage_new_cases = 0)) 
+  dplyr::mutate(percentage_new_cases = 
+                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
+tidyr::replace_na(list(percentage_new_cases = 0)) 
+
+
+
+
+
+
 
 # have a think about this percentage change question. 
 
-(percentage_new_cases = 
-    ((newCasesBySpecimenDate / newCases_day_before)*100))
 
-print(Brentwood_covid_development, n= 40)
+
+print(Brentwood_covid_development)
 
 
 
@@ -205,22 +216,19 @@ Rossendale_covid_data <- covid_data %>%
 # table join  -------------------------------------------------------------
 
 Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brentwood_covid_data) %>%
-  dplyr::select(specimen_date, Rossendale_Cumulative_cases, Brentwood_Cumulative_cases) %>%
+  dplyr::select(specimen_date, Rossendale_Cumulative_cases, Rossendale_new_cases,Brentwood_Cumulative_cases,Brentwood_new_cases) %>%
   dplyr::arrange(specimen_date) %>%
   dplyr::mutate(daily_percentage_difference = (Rossendale_Cumulative_cases - Brentwood_Cumulative_cases)/
                   ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100)
+
                   
-                  
-  
-  
-
 
   
   
+knitr::kable()
 
 
-
-
+print(Rossendale_covid_data)
 
 
 
