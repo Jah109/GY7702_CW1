@@ -137,11 +137,14 @@ Brentwood_complete_covid_data_converted <- Brentwood_complete_covid_data %>%
 Brentwood_covid_development <- dplyr::left_join( Brentwood_day_before,
                                                  Brentwood_complete_covid_data_converted,
                                                 by =c("day_before"= "specimen_date")) %>%
-  dplyr::mutate(percentage_new_cases = 
-                  ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
+  dplyr::mutate((newCasesBySpecimenDate - newCases_day_before)/
+  ((newCasesBySpecimenDate + newCases_day_before)/2)*100) 
   tidyr::replace_na(list(percentage_new_cases = 0)) 
 
+# have a think about this percentage change question. 
 
+(percentage_new_cases = 
+    ((newCasesBySpecimenDate / newCases_day_before)*100))
 
 print(Brentwood_covid_development, n= 40)
 
@@ -203,11 +206,15 @@ Rossendale_covid_data <- covid_data %>%
 
 Rossendale_Brentwood_Comparison <- dplyr::full_join(Rossendale_covid_data, Brentwood_covid_data) %>%
   dplyr::select(specimen_date, Rossendale_Cumulative_cases, Brentwood_Cumulative_cases) %>%
-  dplyr::arrange(specimen_date) 
-                
+  dplyr::arrange(specimen_date) %>%
+  dplyr::mutate(daily_percentage_difference = (Rossendale_Cumulative_cases - Brentwood_Cumulative_cases)/
+                  ((Rossendale_Cumulative_cases +Brentwood_Cumulative_cases)/2)*100)
+                  
+                  
+  
   
 
-  
+
   
   
 
