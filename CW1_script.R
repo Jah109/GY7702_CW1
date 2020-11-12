@@ -128,9 +128,10 @@ library(lubridate)
 # Brentwood_complete_covid_data 
 Brentwood_day_before <- Brentwood_complete_covid_data %>%
   # using lubridate, a new column day_before is created 
-  # day_before is in character data type in the format year month day 
-  # with specimen_date from Brentwood_complete_covid_data - 1  
-  dplyr::mutate(day_before = as.character(ymd(specimen_date -1))) %>%
+  # day_to_match is in character data type in the format year month day 
+  # with specimen_date from Brentwood_complete_covid_data + 1 
+  # altered after email from Stef 
+  dplyr::mutate(day_to_match = as.character(ymd(specimen_date + 1))) %>%
   # specimen_date and cumCasesBySpecimenDate are dropped from the table 
   dplyr::select(-specimen_date, -cumCasesBySpecimenDate) %>%
   #newCasesBySpecimenDate are renamed to newCases_day_before 
@@ -140,9 +141,9 @@ Brentwood_complete_covid_data_converted <- Brentwood_complete_covid_data %>%
   dplyr::mutate(across(where(is.Date), as.character)) 
 
 
-Brentwood_covid_development <- dplyr::left_join( Brentwood_day_before,
-                                                 Brentwood_complete_covid_data_converted,
-                                                by =c("day_before"= "specimen_date")) %>%
+Brentwood_covid_development <- dplyr::inner_join(Brentwood_day_before,
+                                                Brentwood_complete_covid_data_converted,
+                                                by =c("day_to_match"= "specimen_date")) %>%
   dplyr::mutate(percentage_new_cases = 
                   ((newCasesBySpecimenDate / newCases_day_before)*100)) %>%
 tidyr::replace_na(list(percentage_new_cases = 0)) 
