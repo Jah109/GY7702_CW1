@@ -55,7 +55,7 @@ Extract the indexes who at least somewhat agreed or more (values 5 to 7)
 
 ```{r message = FALSE, warning = FALSE}
 # Function which see if any value between 5 and 7 and return the index of each 
-# survey participant 
+# survey participant, including elements with NA 
 which(survey_responses %in% 5:7)
 ```
 
