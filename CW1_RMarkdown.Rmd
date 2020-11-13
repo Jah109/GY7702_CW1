@@ -1,7 +1,7 @@
 ---
 title: 'GY7702: Coursework 1'
-author: "James A. Hardwick (179001497)"
-date: "04/11/2020"
+author: "(179001497)"
+date: "13/11/2020"
 output: pdf_document
 ---
 # Introduction 
@@ -152,7 +152,7 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 
 #### Question 3.2
 
-This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of Brentwood Borough Council (**COVID19 response and information**)[https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
+This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of Brentwood Borough Council [**COVID19 response and information**](https://www.brentwood.gov.uk/index.php?cid=2937) can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
 
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table named Brentwood_complete_covid_data from manipulation of 
@@ -181,7 +181,7 @@ Brentwood_complete_covid_data <- covid_data %>%
 
 #### Question 3.3
 
-Initially, library (**lubdridate**)[https://lubridate.tidyverse.org/] is loaded to
+Initially, library [**lubdridate**](https://lubridate.tidyverse.org/) is loaded to
 aid with date format.
 
 ```{r message = FALSE, warning = FALSE}
