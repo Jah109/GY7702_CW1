@@ -42,7 +42,9 @@ survey_responses %>%
   na.omit() %>%
   # using %in% and c(1,7) will check each value for either completely disagrees 
   # or completely agrees
-  # as checking for specific values, 0 will be also FALSE  
+  # as checking for specific values, 0 will be also FALSE
+  # if any participants do either completely disagrees or agree it will be 
+  # reported as TRUE
   (function(x) x %in% c(1,7))
 
 
@@ -150,7 +152,7 @@ covid_data <-readr::read_csv("covid19_cases_20200301_20201017.csv")
 
 #### Question 3.2
 
-This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of Brentwood Borough Council (**COVID19 response and information**) [https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
+This question asked for an area specific table to be generated. The area I was assigned was **Brentwood** in Essex. A summary of Brentwood Borough Council (**COVID19 response and information**)[https://www.brentwood.gov.uk/index.php?cid=2937] can be found at this address. During the creation of *Brentwood_complete_covid_data* the original *covid_data* was cleaned using tidyr. 
 
 ```{r message = FALSE, warning = FALSE}
 # Creates a new table named Brentwood_complete_covid_data from manipulation of 
@@ -230,7 +232,9 @@ Stored in a table called *Brentwood_covid_development*
 # Left table_join where specimen_date and day_to_match are equal 
 Brentwood_covid_development <- dplyr::left_join(Brentwood_day_before,Brentwood_complete_covid_data_converted, 
                                                 by =c("day_to_match"="specimen_date")) %>%
-  # using mutate new column was created showing the percentage day on day change 
+  # using mutate new column was created showing the percentage day on day change
+  # percentage_new_cases shortened to per_new_cases as table was not fitting on 
+  # width of page 
   dplyr::mutate(per_new_cases = 
                   ((newCasesBySpecimenDate / newCases_day_before)*100)) %>% 
   # Replaces all NaN with 0 
